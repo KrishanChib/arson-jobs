@@ -1,6 +1,7 @@
 // import org.apache.spark._
 import org.apache.spark.sql._
 import org.apache.spark.sql.functions._
+import java.io.ByteArrayOutputStream
 
 object Main extends App {
 
@@ -30,19 +31,21 @@ object Main extends App {
   // duesDf.show()
 
   val owedDf = duesDf.filter(col("Total Owed") > 0)
-  owedDf.show()
+  // owedDf.show()
 
   // Replace with your desired webhook url
   // TODO: Update to env variable
   val webhookUrl = ""
 
-  // TODO: Either find a way to adjust message visibility or send one message for all debtors
-  owedDf.collect().foreach { row =>
-      val player = row.getAs[String]("Player")
-      val amount = row.getAs[String]("Total Owed")
-      val message = s"Hi, $player! You currently owe $$$amount. Please send in your payment or talk to Krishan if you need to set up a payment plan."
+    val outCapture = new ByteArrayOutputStream
+      Console.withOut(outCapture) {
+        // owedDf.show(numRows = 3, truncate = 20, vertical = true)
+        owedDf.show()
+      }
 
-      requests.post(webhookUrl, data = Map("content" -> message))
-    }
+    val dfString = new String(outCapture.toByteArray)
+    
+    // triple backticks specify a code block message which uses monospaced font. Neccessary for df columns to have even spacing
+    requests.post(webhookUrl, data = Map("content" -> s"```$dfString```"))
 
 }
