@@ -1,0 +1,44 @@
+*.class
+
+# sbt specific
+.cache
+.history
+.lib/
+.bloop
+.metals
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/target/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.cache-main
+.cache-tests
+.classpath
+.project
+.settings/
+/bin/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+testoutput/
+
+.DS_Store
+**/.DS_Store
+
+prod.json
+dev.json
+run.sh
+
+.vscode/
+project/project/
+
+deployment/gcp/trigger-jobs/creds
+.bsp/sbt.json
